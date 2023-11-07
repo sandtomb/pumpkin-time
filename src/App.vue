@@ -1,7 +1,7 @@
 <template>
   <div id="pumpkin-competition-wrapper">
     <div id="title-wrapper">
-      <h1>Pumpkin Competition</h1>
+      <h1>Pumpkin Carving Competition</h1>
     </div>
     <div id="state-display-wrapper">
       <h2>Current State: </h2>
@@ -259,7 +259,6 @@ export default {
 
 <style scoped>
   #pumpkin-competition-wrapper{
-    border: 2px solid orange;
     display: flex;
     height: 100vh;
     width: 100%;
@@ -352,6 +351,16 @@ export default {
     height: 16px;
     background-color: #27ae60; /* Color of the stem */
     border-radius: 50%;
+  }
+
+  #button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  #title-wrapper {
+    display: flex;
+    justify-content: center;
   }
 
 </style>
