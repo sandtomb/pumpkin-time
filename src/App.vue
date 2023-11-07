@@ -4,11 +4,20 @@
       <h1>Pumpkin Carving Competition</h1>
     </div>
     <div id="state-display-wrapper">
-      <h2>Current State: </h2>
+      <div>
+        <h4>Current State: </h4>
+      </div>
+      <div id="current-state">
+        testing testing testing
+      </div>
     </div>
     <div id="button-wrapper">
       <div id="eye-1" class="eye"></div>
       <div id="eye-2" class="eye"></div>
+      <div id="eye-3" class="eye"></div>
+      <div id="eye-4" class="eye"></div>
+      <div id="eye-5" class="eye"></div>
+      <div id="eye-6" class="eye"></div>
       <button
         id="pick-pumpkin"
         class="pumpkin-button"
@@ -31,6 +40,14 @@
         @click="carvePumpkin"
         >
         Run Carve Pumpkin
+      </button>
+
+      <button
+        id="submit-pumpkin"
+        class="pumpkin-button"
+        @click="submitPumpkin"
+        >
+          Submit Pumpkin
       </button>
 
       <button
@@ -307,6 +324,34 @@ export default {
     animation: blink 15s infinite;
   }
 
+  #eye-3 {
+    left: 25%;
+    top: 15%;
+    opacity: 20%;
+    animation: blink 5s infinite;
+  }
+
+  #eye-4 {
+    left: 15%;
+    top: 85%;
+    opacity: 20%;
+    animation: blink 14s infinite;
+  }
+
+  #eye-5 {
+    left: 15%;
+    top: 7%;
+    opacity: 20%;
+    animation: blink 8s infinite;
+  }
+
+  #eye-6 {
+    left: 75%;
+    top: 85%;
+    opacity: 20%;
+    animation: blink 7s infinite;
+  }
+
   .eye::before {
     content: '';
     position: absolute;
@@ -328,6 +373,13 @@ export default {
     border-radius: 4em; /* Rounded corners */
     cursor: pointer;
     transition: all 0.3s ease; /* Smooth transition for button press effect */
+  }
+
+  #state-display-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .pumpkin-button:hover {
@@ -362,5 +414,54 @@ export default {
     display: flex;
     justify-content: center;
   }
+
+  /* #current-state {
+    display: flex;
+    min-width: 2em;
+    border: .2em solid #d35400;
+    border-radius: 2em;
+    padding-left: .2em;
+    margin-left: .2em;
+  } */
+
+  #current-state {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 4em;
+    text-align: center;
+    height: 2em;
+    padding: .4em;
+    border: .2em solid transparent; /* Make border transparent initially */
+    border-radius: 2em;
+    margin-left: .2em;
+    overflow: hidden; /* Ensure the pseudo-element does not extend outside */
+  }
+
+  @keyframes trace-border {
+  0% {
+    box-shadow: inset 0 0 0 0 #d35400;
+  }
+  80% {
+    box-shadow: inset 0 0 0 .1em #d35400;
+  }
+  100% {
+    box-shadow: inset 0 0 0 .2em #d35400;
+  }
+}
+
+#current-state::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit; /* Use the same border-radius as the parent */
+  animation: trace-border 5s infinite; /* Adjust the timing as needed */
+}
+
+
 
 </style>
