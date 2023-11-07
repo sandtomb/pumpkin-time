@@ -125,6 +125,18 @@
           Pick Winner
       </button>
     </div>
+    <div id="submitted-pumpkins-wrapper">
+      <h2>
+        Submitted Pumpkins
+      </h2>
+      <li
+        v-for="pumpkin in pumpkinContest.pumpkins"
+        :key="pumpkin.id"
+        class="submitted-pumpkin"
+      >
+        {{ pumpkin.id }} : {{ pumpkin.design }}
+      </li>
+    </div>
   </div>
 </template>
 
@@ -312,7 +324,7 @@ class PumpkinContest {
   }
 
   pickWinner() : void {
-    if (this.pumpkins.length >= this.MAX_PUMPKINS) {
+    if (this.isFull()) {
       const winner: Pumpkin = this.pumpkins[(Math.floor(Math.random() * this.pumpkins.length))]
       this.pumpkins = []
       this.setState(this.getNoPumpkinState())
@@ -364,7 +376,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
@@ -468,6 +479,11 @@ export default {
     border-radius: 4em; /* Rounded corners */
     cursor: pointer;
     transition: all 0.3s ease; /* Smooth transition for button press effect */
+  }
+
+  .submitted-pumpkin {
+    color: white;
+    list-style: none;
   }
 
   #state-display-wrapper {
