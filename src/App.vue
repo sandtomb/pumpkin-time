@@ -3,12 +3,20 @@
     <div id="title-wrapper">
       <h1>Pumpkin Carving Competition</h1>
     </div>
+    <div>
+      <h2>
+        Current Pumpkin Count:
+        {{ pumpkinContest.pumpkins.length }} / {{ pumpkinContest.MAX_PUMPKINS }}
+      </h2>
+    </div>
     <div id="state-display-wrapper">
       <div>
-        <h4>Current State: </h4>
+        <h4>
+          Current State: 
+        </h4>
       </div>
       <div id="current-state">
-        testing testing testing
+        {{ pumpkinContest.state.name }}
       </div>
     </div>
     <div id="button-wrapper">
@@ -62,7 +70,10 @@
 </template>
 
 <script lang="ts">
-import { ref, type Ref } from 'vue'
+import {
+  ref,
+  type Ref,
+} from 'vue'
 
 const POSSIBLE_PUMPKIN_DESIGNS = [
   'Ghost', 'Elf', 'Wizard', 'Archer', 'Knight', 'Pikachu', 'Eevee', 'Charmander', 'Scary Face', 'Happy Face', 'Sad Face'
@@ -83,6 +94,7 @@ class Pumpkin {
 }
 
 interface State {
+  name: string,
   pickPumpkin(): void,
   putPumpkinBack(): void,
   carvePumpkin(): void,
@@ -90,9 +102,11 @@ interface State {
 }
 
 class NoPumpkinState implements State {
+  name: string
   pumpkinContest: PumpkinContest
 
   constructor(contest: PumpkinContest) {
+    this.name = 'No Pumpkin'
     this.pumpkinContest = contest
   }
 
@@ -115,9 +129,11 @@ class NoPumpkinState implements State {
 }
 
 class HasPumpkinState implements State {
+  name: string
   pumpkinContest: PumpkinContest
 
   constructor(contest: PumpkinContest) {
+    this.name = 'Has Pumpkin'
     this.pumpkinContest = contest
   }
 
@@ -141,9 +157,11 @@ class HasPumpkinState implements State {
 }
 
 class CarvedPumpkinState implements State {
+  name: string
   pumpkinContest: PumpkinContest
 
   constructor(contest: PumpkinContest) {
+    this.name = 'You have a carved pumpkin'
     this.pumpkinContest = contest
   }
 
@@ -161,8 +179,7 @@ class CarvedPumpkinState implements State {
 
   submitPumpkin(): void {
     this.pumpkinContest.addPumpkin(new Pumpkin())
-    console.log('You successfullly submit your pumpkin')
-    this.pumpkinContest.clearPumpkins()
+    console.log('You successfully submit your pumpkin')
     this.pumpkinContest.setState(this.pumpkinContest.getNoPumpkinState())
   }
 }
@@ -183,7 +200,7 @@ class PumpkinContest {
     this.noPumpkinState = new NoPumpkinState(this)
     this.hasPumpkinState = new HasPumpkinState(this)
     this.carvedPumpkinState = new CarvedPumpkinState(this)
-    this.state = new NoPumpkinState(this)
+    this.state = this.noPumpkinState
   }
 
   getNoPumpkinState = (): PumpkinContestState => {
@@ -262,9 +279,9 @@ export default {
     }
 
     return {
+      pumpkinContest,
       pickPumpkin,
       putPumpkinBack,
-      pumpkinContest,
       carvePumpkin,
       submitPumpkin,
       pickWinner,
@@ -415,17 +432,9 @@ export default {
     justify-content: center;
   }
 
-  /* #current-state {
-    display: flex;
-    min-width: 2em;
-    border: .2em solid #d35400;
-    border-radius: 2em;
-    padding-left: .2em;
-    margin-left: .2em;
-  } */
-
   #current-state {
     position: relative;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -461,7 +470,5 @@ export default {
   border-radius: inherit; /* Use the same border-radius as the parent */
   animation: trace-border 5s infinite; /* Adjust the timing as needed */
 }
-
-
 
 </style>
