@@ -16,7 +16,7 @@
         </h4>
       </div>
       <div id="current-state">
-        {{ pumpkinContest.state.name }}
+        {{ stateName }}
       </div>
     </div>
     <div id="button-wrapper">
@@ -152,7 +152,7 @@ class HasPumpkinState implements State {
   }
 
   submitPumpkin(): void {
-    console.log('You must have a carved pumpkin for eligible submission!')
+    console.log('You must have a carved pumpkin for an eligible submission!')
   }
 }
 
@@ -161,7 +161,7 @@ class CarvedPumpkinState implements State {
   pumpkinContest: PumpkinContest
 
   constructor(contest: PumpkinContest) {
-    this.name = 'You have a carved pumpkin'
+    this.name = 'Has Carved Pumpkin'
     this.pumpkinContest = contest
   }
 
@@ -178,8 +178,9 @@ class CarvedPumpkinState implements State {
   }
 
   submitPumpkin(): void {
-    this.pumpkinContest.addPumpkin(new Pumpkin())
-    console.log('You successfully submit your pumpkin')
+    const pumpkin: Pumpkin = new Pumpkin()
+    this.pumpkinContest.addPumpkin(pumpkin)
+    alert('You have successfully submitted your pumpkin: ' + pumpkin.toString())
     this.pumpkinContest.setState(this.pumpkinContest.getNoPumpkinState())
   }
 }
@@ -232,7 +233,11 @@ class PumpkinContest {
   }
 
   submitPumpkin(): void {
-    this.state.submitPumpkin()
+    if (this.isFull()) {
+      alert('Carving Competition is full - Time to select a winner!')
+    } else {
+      this.state.submitPumpkin()
+    }
   }
 
   addPumpkin(pumpkin: Pumpkin): void {
@@ -243,10 +248,15 @@ class PumpkinContest {
     this.pumpkins = []
   }
 
+  isFull(): boolean {
+    return this.pumpkins.length >= this.MAX_PUMPKINS
+  }
+
   pickWinner() : void {
     if (this.pumpkins.length >= this.MAX_PUMPKINS) {
       const winner: Pumpkin = this.pumpkins[(Math.floor(Math.random() * this.pumpkins.length))]
       this.pumpkins = []
+      this.setState(this.getNoPumpkinState())
       alert('Winner is: ' + winner.toString())
     } else {
       alert('Not enough pumpkins have been submitted!')
@@ -257,29 +267,36 @@ class PumpkinContest {
 export default {
   setup() {
     const pumpkinContest:Ref<PumpkinContest> = ref(new PumpkinContest())
+    const stateName: Ref<string> = ref(pumpkinContest.value.state.name)
 
     const pickPumpkin = (): void => {
       pumpkinContest.value.pickPumpkin()
+      stateName.value = pumpkinContest.value.state.name
     }
 
     const putPumpkinBack = (): void => {
       pumpkinContest.value.putPumpkinBack()
+      stateName.value = pumpkinContest.value.state.name
     }
 
     const carvePumpkin = (): void => {
       pumpkinContest.value.carvePumpkin()
+      stateName.value = pumpkinContest.value.state.name
     }
 
     const submitPumpkin = (): void => {
       pumpkinContest.value.submitPumpkin()
+      stateName.value = pumpkinContest.value.state.name
     }
 
     const pickWinner = (): void => {
       pumpkinContest.value.pickWinner()
+      stateName.value = pumpkinContest.value.state.name
     }
 
     return {
       pumpkinContest,
+      stateName,
       pickPumpkin,
       putPumpkinBack,
       carvePumpkin,
